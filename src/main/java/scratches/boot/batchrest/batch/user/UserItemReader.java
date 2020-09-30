@@ -1,21 +1,32 @@
 package scratches.boot.batchrest.batch.user;
 
-import lombok.AllArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.batch.item.ItemReader;
 import scratches.boot.batchrest.user.User;
 import scratches.boot.batchrest.user.UserRestRepository;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 /**
  * @author Rashidi Zin
  */
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserItemReader implements ItemReader<User> {
 
+    @NonNull
     private final UserRestRepository repository;
+
+    private static final AtomicInteger counter = new AtomicInteger(0);
 
     @Override
     public User read() {
-        return repository.findByUsername("Samantha");
+        var username = getUsername();
+        return repository.findByUsername(username);
+    }
+
+    private String getUsername() {
+        return counter.getAndIncrement() == 1 ? "Samantha" : "Rashidi";
     }
 
 }
