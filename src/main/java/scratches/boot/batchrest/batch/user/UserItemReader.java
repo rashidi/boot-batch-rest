@@ -26,7 +26,7 @@ public class UserItemReader implements ItemReader<User> {
     }
 
     private String getUsername() {
-        return counter.getAndIncrement() == 1 ? "Samantha" : "Rashidi";
+        return counter.getAndIncrement() == 0 ? "Samantha" : "Rashidi";
     }
 
 }
