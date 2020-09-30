@@ -239,6 +239,40 @@ public class BatchConfiguration {
 
 }
 ```
+## Job Execution Listener
+Spring Batch provides an interface called `JobExecutionListener` to notify events in a Job lifecycle. So there are times you
+might want to do something before or after the job is done executing, so you can add a `JobExecutionListener` 
+to it.
+
+### Creating a JobExecutionListener
+```
+public class JobListener  implements JobExecutionListener {
+
+    @Override
+    public void beforeJob(JobExecution jobExecution) {
+        //You can do some logging or some business logic before the job
+    }
+
+    @Override
+    public void afterJob(JobExecution jobExecution) {
+        //You can do some logging or some business logic after the job
+    }
+}
+```
+
+After that just place the Listener into the `Job`.
+
+```
+@Bean
+public Job postJob(JobBuilderFactory factory, Step postStep) {
+     return factory.get("postJob")
+             .incrementer(new RunIdIncrementer())
+             .listener(new JobListener()) //Add this line for the listener
+             .flow(postStep)
+             .end()
+             .build();
+ }
+```
 
 ## Verification
 As usual, we will do our verification via unit test with the help [SpringBatchTest][14].

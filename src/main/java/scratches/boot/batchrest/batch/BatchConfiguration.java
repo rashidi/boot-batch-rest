@@ -8,6 +8,7 @@ import org.springframework.batch.core.configuration.annotation.StepBuilderFactor
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import scratches.boot.batchrest.batch.listener.JobListener;
 import scratches.boot.batchrest.batch.post.PostItemProcessor;
 import scratches.boot.batchrest.batch.post.PostItemWriter;
 import scratches.boot.batchrest.batch.user.UserItemReader;
@@ -50,7 +51,12 @@ public class BatchConfiguration {
 
     @Bean
     public Job postJob(JobBuilderFactory factory, Step postStep) {
-        return factory.get("postJob").incrementer(new RunIdIncrementer()).flow(postStep).end().build();
+        return factory.get("postJob")
+                .incrementer(new RunIdIncrementer())
+                .listener(new JobListener())
+                .flow(postStep)
+                .end()
+                .build();
     }
 
 }
