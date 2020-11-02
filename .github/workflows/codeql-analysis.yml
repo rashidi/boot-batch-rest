@@ -58,8 +58,8 @@ jobs:
       with:
         java-version: 11      
     - name: Autobuild
-#      uses: github/codeql-action/autobuild@v1
-      run: mvn -B package --file pom.xml
+      uses: github/codeql-action/autobuild@v1
+#      run: mvn -B package --file pom.xml
 
     # ℹ️ Command-line programs to run using the OS shell.
     # 📚 https://git.io/JvXDl
